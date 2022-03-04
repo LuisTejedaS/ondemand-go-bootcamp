@@ -13,7 +13,7 @@ func TestCreatePokemonConstructor(t *testing.T) {
 	}
 
 	if cPokemon.Name != pName {
-		t.Errorf("Pokemon Id was not set, got: %s, want: %s.", cPokemon.Name, pName)
+		t.Errorf("Pokemon Name was not set, got: %s, want: %s.", cPokemon.Name, pName)
 	}
 }
 
@@ -26,6 +26,6 @@ func TestCreatePokemon(t *testing.T) {
 	}
 
 	if cPokemon.Name != pName {
-		t.Errorf("Pokemon Id was not set, got: %s, want: %s.", cPokemon.Name, pName)
+		t.Errorf("Pokemon Name was not set, got: %s, want: %s.", cPokemon.Name, pName)
 	}
 }
