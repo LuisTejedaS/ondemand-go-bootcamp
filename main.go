@@ -7,7 +7,7 @@ import (
 	"github.com/LuisTejedaS/ondemand-go-bootcamp/infraestructure/data"
 	controller "github.com/LuisTejedaS/ondemand-go-bootcamp/interface/controllers"
 	"github.com/LuisTejedaS/ondemand-go-bootcamp/interface/repository"
-	"github.com/LuisTejedaS/ondemand-go-bootcamp/router"
+	routerV1 "github.com/LuisTejedaS/ondemand-go-bootcamp/router"
 	"github.com/LuisTejedaS/ondemand-go-bootcamp/usecase/interactor"
 	"github.com/LuisTejedaS/ondemand-go-bootcamp/usecase/presenter"
 	"github.com/LuisTejedaS/ondemand-go-bootcamp/usecase/service"
@@ -31,8 +31,12 @@ func main() {
 
 	controller := controller.NewPokemonController(pokemonInteractor)
 
-	appRouter := router.NewRoute(controller)
+	router := routerV1.CreateRouter()
+	routerGroup := routerV1.CreateRouterGroup(router)
+
+	routerV1.RegisterPokemonRoutes(routerGroup, controller)
+
 	log.Printf("Listening on port %s", port)
 
-	log.Fatal(http.ListenAndServe(port, appRouter.Router()))
+	log.Fatal(http.ListenAndServe(port, router))
 }
