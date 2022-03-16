@@ -1,11 +1,11 @@
 package model
 
 type Pokemon struct {
-	ID   uint64
+	ID   uint
 	Name string
 }
 
-func newPokemon(Id uint64, name string) *Pokemon {
+func newPokemon(Id uint, name string) *Pokemon {
 	p := Pokemon{Name: name, ID: Id}
 	return &p
 }

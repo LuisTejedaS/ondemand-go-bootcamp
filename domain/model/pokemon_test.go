@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestCreatePokemonConstructor(t *testing.T) {
+func TestCreateNewPokemon(t *testing.T) {
 	pID := uint(1)
 	pName := "bulbasaur"
 	cPokemon := newPokemon(uint(pID), pName)

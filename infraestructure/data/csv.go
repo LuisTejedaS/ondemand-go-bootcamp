@@ -2,6 +2,7 @@ package data
 
 import (
 	"encoding/csv"
+	"errors"
 	"os"
 )
 
@@ -9,8 +10,11 @@ type CsvDataSource struct {
 	csvPath string
 }
 
-func NewCSVDataSource(csvPath string) CsvDataSource {
-	return CsvDataSource{csvPath}
+func NewCSVDataSource(csvPath string) (CsvDataSource, error) {
+	if csvPath == "" {
+		return CsvDataSource{csvPath}, errors.New("No CSV path sent")
+	}
+	return CsvDataSource{csvPath}, nil
 }
 
 func (c CsvDataSource) ReadCollection() ([][]string, error) {
@@ -31,15 +35,18 @@ func (c CsvDataSource) ReadCollection() ([][]string, error) {
 }
 
 type csvDataStore struct {
-	store string
+	csvPath string
 }
 
-func NewCSVDataStore(csvPath string) csvDataStore {
-	return csvDataStore{store: csvPath}
+func NewCSVDataStore(csvPath string) (csvDataStore, error) {
+	if csvPath == "" {
+		return csvDataStore{csvPath}, errors.New("No CSV path sent")
+	}
+	return csvDataStore{csvPath}, nil
 }
 
 func (c csvDataStore) SaveRecord(record []string) error {
-	file, err := os.OpenFile(c.store, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	file, err := os.OpenFile(c.csvPath, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 	if err != nil {
 		return err
 	}

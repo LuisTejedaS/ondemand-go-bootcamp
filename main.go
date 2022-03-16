@@ -18,7 +18,10 @@ const port = ":8090"
 func main() {
 	log.SetFlags(log.Lshortfile | log.LstdFlags)
 
-	csvDataSourcePokemon := data.NewCSVDataSource("/Users/luis.tejeda/Documents/Source/GitHub/ondemand-go-bootcamp/poke.csv")
+	csvDataSourcePokemon, err := data.NewCSVDataSource("/Users/luis.tejeda/Documents/Source/GitHub/ondemand-go-bootcamp/poke.csv")
+	if err != nil {
+		log.Fatalln(err)
+	}
 
 	pokemonCSVRepository, err := repository.NewpokemonCSVRepository(csvDataSourcePokemon)
 	if err != nil {

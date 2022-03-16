@@ -38,7 +38,7 @@ func (a *pokemonCSVRepository) loadPokemons() error {
 			return err
 		}
 
-		p.ID = id
+		p.ID = uint(id)
 		p.Name = v[1]
 
 		a.pokemons = append(a.pokemons, &p)
