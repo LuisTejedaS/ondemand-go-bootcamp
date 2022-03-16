@@ -9,6 +9,11 @@ func getAllPokemons(g *gin.RouterGroup, p controller.PokemonController) {
 	g.GET("/pokemons", p.GetPokemons)
 }
 
+func getPokemon(g *gin.RouterGroup, p controller.PokemonController) {
+	g.GET("/pokemons/:id", p.GetPokemon)
+}
+
 func RegisterPokemonRoutes(g *gin.RouterGroup, p controller.PokemonController) {
 	getAllPokemons(g, p)
+	getPokemon(g, p)
 }

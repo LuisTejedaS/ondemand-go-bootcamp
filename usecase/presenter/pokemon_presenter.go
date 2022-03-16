@@ -7,6 +7,7 @@ type pokemonPresenter struct {
 
 type PokemonPresenter interface {
 	ResponsePokemons(p []*model.Pokemon) []*model.Pokemon
+	ResponsePokemon(p *model.Pokemon) *model.Pokemon
 }
 
 func NewPokemonPresenter() PokemonPresenter {
@@ -14,10 +15,9 @@ func NewPokemonPresenter() PokemonPresenter {
 }
 
 func (pp *pokemonPresenter) ResponsePokemons(p []*model.Pokemon) []*model.Pokemon {
-	res := make([]model.Pokemon, len(p))
-	for i, po := range p {
-		res[i] = *po
-	}
 	return p
+}
 
+func (pp *pokemonPresenter) ResponsePokemon(p *model.Pokemon) *model.Pokemon {
+	return p
 }

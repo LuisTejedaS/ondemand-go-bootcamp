@@ -2,6 +2,7 @@ package repository
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 
 	"github.com/LuisTejedaS/ondemand-go-bootcamp/domain/model"
@@ -32,7 +33,12 @@ func (a *pokemonCSVRepository) loadPokemons() error {
 	for _, v := range csvRecords {
 		p := model.Pokemon{}
 
-		strconv.Atoi(v[0])
+		id, err := strconv.ParseUint(v[0], 10, 32)
+		if err != nil {
+			return err
+		}
+
+		p.ID = id
 		p.Name = v[1]
 
 		a.pokemons = append(a.pokemons, &p)
@@ -41,19 +47,19 @@ func (a *pokemonCSVRepository) loadPokemons() error {
 	return nil
 }
 
-// GetByID searches for a pokemon with the given id parameter.
+// FindById searches for a pokemon with the given id parameter.
 //
 // If the search is successful, a pointer to the found Pokemon is returned.
 // Otherwise and ErrPokemonNotFoundByID error is returned.
-// func (a *pokemonCSVRepository) GetByID(id int) (*entity.Pokemon, error) {
-// 	for _, pokemon := range a.pokemons {
-// 		if id == int(pokemon.ID) {
-// 			return &pokemon, nil
-// 		}
-// 	}
+func (a *pokemonCSVRepository) FindById(p *model.Pokemon, id int) (*model.Pokemon, error) {
+	for _, pokemon := range a.pokemons {
+		if id == int(pokemon.ID) {
+			return pokemon, nil
+		}
+	}
 
-// 	return nil, fmt.Errorf("%w %v", ErrPokemonNotFoundByID, id)
-// }
+	return nil, fmt.Errorf("%w %v", errors.New("no pokemon found"), id)
+}
 
 // GetAll returns a slice of all pokemons.
 //
