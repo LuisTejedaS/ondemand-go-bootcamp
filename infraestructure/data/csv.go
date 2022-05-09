@@ -6,18 +6,22 @@ import (
 	"os"
 )
 
-type CsvDataSource struct {
+type csvDataSource struct {
 	csvPath string
 }
 
-func NewCSVDataSource(csvPath string) (CsvDataSource, error) {
-	if csvPath == "" {
-		return CsvDataSource{csvPath}, errors.New("No CSV path sent")
-	}
-	return CsvDataSource{csvPath}, nil
+type CsvDataSource interface {
+	ReadCollection() ([][]string, error)
 }
 
-func (c CsvDataSource) ReadCollection() ([][]string, error) {
+func NewCSVDataSource(csvPath string) (csvDataSource, error) {
+	if csvPath == "" {
+		return csvDataSource{csvPath}, errors.New("No CSV path sent")
+	}
+	return csvDataSource{csvPath}, nil
+}
+
+func (c csvDataSource) ReadCollection() ([][]string, error) {
 	file, err := os.Open(c.csvPath)
 	if err != nil {
 		return nil, err
