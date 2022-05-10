@@ -3,6 +3,7 @@ package data
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -79,6 +80,19 @@ func TestReadCollection(t *testing.T) {
 	os.Remove("testdata/poke.csv")
 }
 
+func TestReadCollectionError(t *testing.T) {
+	dir := createFile(t)
+	p := dir + "/poka.csv"
+	csvDS, _ := NewCSVDataSource(p)
+	if csvDS.csvPath != p {
+		t.Errorf("CSVPath was not set, got: %s, want: %s.", csvDS.csvPath, p)
+	}
+	_, err := csvDS.ReadCollection()
+	if !strings.Contains(err.Error(), "no such file or directory") {
+		t.Errorf("We expect to return error reading unexistent file: %s", err.Error())
+	}
+}
+
 func TestSaveRecord(t *testing.T) {
 	dir := createFile(t)
 	p := dir + "/poke.csv"
@@ -102,4 +116,17 @@ func TestSaveRecord(t *testing.T) {
 		t.Errorf("Expected to read: %d pokemons but read %d", 1, len(pok))
 	}
 	os.Remove("testdata/poke.csv")
+}
+
+func TestSaveRecordError(t *testing.T) {
+	dir := createFile(t)
+	p := dir + "/poka.csv"
+	record := []string{"1", "Charmander"}
+	header := []string{"id", "Name"}
+	csvDSt, _ := NewCSVDataStore(p)
+	csvDSt.SaveRecord(header)
+	err := csvDSt.SaveRecord(record)
+	if !strings.Contains(err.Error(), "no such file or directory") {
+		t.Errorf("We expect to return error reading unexistent file: %s", err.Error())
+	}
 }
