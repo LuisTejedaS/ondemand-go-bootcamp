@@ -27,6 +27,8 @@ func (pc *pokemonController) GetPokemons(c *gin.Context) {
 
 	p, err := pc.pokemonInteractor.Get(p)
 	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
 	}
 
 	c.JSON(http.StatusOK, p)
@@ -41,7 +43,7 @@ func (pc *pokemonController) GetPokemon(c *gin.Context) {
 
 	p, err = pc.pokemonInteractor.GetById(p, id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 
