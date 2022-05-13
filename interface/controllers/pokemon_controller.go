@@ -2,7 +2,6 @@ package controller
 
 import (
 	"net/http"
-
 	"strconv"
 
 	"github.com/LuisTejedaS/ondemand-go-bootcamp/domain/model"
