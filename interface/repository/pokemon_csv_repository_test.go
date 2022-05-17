@@ -4,20 +4,8 @@ import (
 	"testing"
 
 	"github.com/LuisTejedaS/ondemand-go-bootcamp/domain/model"
-	"github.com/stretchr/testify/mock"
+	mocks "github.com/LuisTejedaS/ondemand-go-bootcamp/mocks/infraestructure/data"
 )
-
-type MockedCsvDataSource struct {
-	mock.Mock
-}
-
-func (m MockedCsvDataSource) ReadCollection() ([][]string, error) {
-
-	ret := m.Called()
-	r0 := ret.Get(0).([][]string)
-	r1 := ret.Error(1)
-	return r0, r1
-}
 
 var mockCSV = [][]string{
 	{"1", "Bulbasaur"},
@@ -30,7 +18,7 @@ var mockCSVEmpty = [][]string{}
 
 func TestFindAll(t *testing.T) {
 	var p []*model.Pokemon
-	pokeDS := new(MockedCsvDataSource)
+	pokeDS := new(mocks.CsvDataSource)
 	pokeDS.On("ReadCollection").Return(mockCSV, nil)
 
 	poCSVRepository, err := NewpokemonCSVRepository(pokeDS)
@@ -46,7 +34,7 @@ func TestFindAll(t *testing.T) {
 
 func TestFindById(t *testing.T) {
 	var p *model.Pokemon
-	pokeDS := new(MockedCsvDataSource)
+	pokeDS := new(mocks.CsvDataSource)
 	pokeDS.On("ReadCollection").Return(mockCSV, nil)
 
 	poCSVRepository, err := NewpokemonCSVRepository(pokeDS)
@@ -62,7 +50,7 @@ func TestFindById(t *testing.T) {
 
 func TestFindByIdNotFound(t *testing.T) {
 	var p *model.Pokemon
-	pokeDS := new(MockedCsvDataSource)
+	pokeDS := new(mocks.CsvDataSource)
 	pokeDS.On("ReadCollection").Return(mockCSV, nil)
 
 	poCSVRepository, err := NewpokemonCSVRepository(pokeDS)
@@ -78,7 +66,7 @@ func TestFindByIdNotFound(t *testing.T) {
 
 func TestFindAllNotFound(t *testing.T) {
 	var p []*model.Pokemon
-	pokeDS := new(MockedCsvDataSource)
+	pokeDS := new(mocks.CsvDataSource)
 	pokeDS.On("ReadCollection").Return(mockCSVEmpty, nil)
 
 	poCSVRepository, err := NewpokemonCSVRepository(pokeDS)

@@ -4,30 +4,8 @@ import (
 	"testing"
 
 	"github.com/LuisTejedaS/ondemand-go-bootcamp/domain/model"
-	"github.com/stretchr/testify/mock"
+	mocks "github.com/LuisTejedaS/ondemand-go-bootcamp/mocks/usecase/repository"
 )
-
-type MockedRepository struct {
-	mock.Mock
-}
-
-func (m MockedRepository) FindAll(u []*model.Pokemon) ([]*model.Pokemon, error) {
-	ret := m.Called()
-
-	r0 := ret.Get(0).([]*model.Pokemon)
-	r1 := ret.Error(1)
-
-	return r0, r1
-}
-
-func (m MockedRepository) FindById(u *model.Pokemon, id int) (*model.Pokemon, error) {
-	ret := m.Called()
-
-	r0 := ret.Get(0).(*model.Pokemon)
-	r1 := ret.Error(1)
-
-	return r0, r1
-}
 
 var mockPokemon = []*model.Pokemon{
 	{ID: 1, Name: "Bulbasaur"},
@@ -38,8 +16,8 @@ var mockPokemon = []*model.Pokemon{
 
 func TestFindAll(t *testing.T) {
 	var p []*model.Pokemon
-	pokeRepository := new(MockedRepository)
-	pokeRepository.On("FindAll").Return(mockPokemon, nil)
+	pokeRepository := new(mocks.PokemonRepository)
+	pokeRepository.On("FindAll", p).Return(mockPokemon, nil)
 
 	pokemonService := NewPokemonService(pokeRepository)
 	p, err := pokemonService.FindAll(p)
@@ -54,8 +32,8 @@ func TestFindAll(t *testing.T) {
 
 func TestFindByID(t *testing.T) {
 	var p *model.Pokemon
-	pokeRepository := new(MockedRepository)
-	pokeRepository.On("FindById").Return(mockPokemon[2], nil)
+	pokeRepository := new(mocks.PokemonRepository)
+	pokeRepository.On("FindById", p, 3).Return(mockPokemon[2], nil)
 
 	pokemonService := NewPokemonService(pokeRepository)
 	p, err := pokemonService.FindById(p, 3)
