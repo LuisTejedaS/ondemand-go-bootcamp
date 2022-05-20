@@ -130,3 +130,27 @@ func TestSaveRecordError(t *testing.T) {
 		t.Errorf("We expect to return error reading unexistent file: %s", err.Error())
 	}
 }
+
+func TestSaveRecords(t *testing.T) {
+	dir := createFile(t)
+	p := dir + "/poke.csv"
+	records := [][]string{{"id", "Name"}, {"1", "bulbasaur"}, {"2", "ivysaur"}}
+
+	csvDSt, _ := NewCSVDataStore(p)
+	err := csvDSt.SaveRecords(records)
+	if err != nil {
+		t.Errorf("There was an error saving record: %s", err)
+	}
+	csvDS, _ := NewCSVDataSource(p)
+	if csvDS.csvPath != p {
+		t.Errorf("CSVPath was not set, got: %s, want: %s.", csvDS.csvPath, p)
+	}
+	pok, err := csvDS.ReadCollection()
+	if err != nil {
+		t.Errorf("Error reading collection %s", err)
+	}
+	if len(pok) != 2 {
+		t.Errorf("Expected to read: %d pokemons but read %d", 1, len(pok))
+	}
+	os.Remove("testdata/poke.csv")
+}

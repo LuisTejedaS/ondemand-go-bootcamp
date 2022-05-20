@@ -38,6 +38,11 @@ func (c csvDataSource) ReadCollection() ([][]string, error) {
 	return records, nil
 }
 
+type CsvDataStore interface {
+	SaveRecord(record []string) error
+	SaveRecords(record [][]string) error
+}
+
 type csvDataStore struct {
 	csvPath string
 }
@@ -58,6 +63,29 @@ func (c csvDataStore) SaveRecord(record []string) error {
 
 	csvWriter := csv.NewWriter(file)
 	err = csvWriter.Write(record)
+	if err != nil {
+		return err
+	}
+
+	csvWriter.Flush()
+
+	err = csvWriter.Error()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (c csvDataStore) SaveRecords(records [][]string) error {
+	file, err := os.OpenFile(c.csvPath, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	csvWriter := csv.NewWriter(file)
+	err = csvWriter.WriteAll(records)
 	if err != nil {
 		return err
 	}
