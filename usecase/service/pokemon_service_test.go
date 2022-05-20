@@ -17,9 +17,10 @@ var mockPokemon = []*model.Pokemon{
 func TestFindAll(t *testing.T) {
 	var p []*model.Pokemon
 	pokeRepository := new(mocks.PokemonRepository)
+	pokeLoader := new(mocks.PokemonLoader)
 	pokeRepository.On("FindAll", p).Return(mockPokemon, nil)
 
-	pokemonService := NewPokemonService(pokeRepository)
+	pokemonService := NewPokemonService(pokeRepository, pokeLoader)
 	p, err := pokemonService.FindAll(p)
 	if err != nil {
 		t.Errorf("Error in Pokemon service: %s", err)
@@ -33,9 +34,11 @@ func TestFindAll(t *testing.T) {
 func TestFindByID(t *testing.T) {
 	var p *model.Pokemon
 	pokeRepository := new(mocks.PokemonRepository)
+	pokeLoader := new(mocks.PokemonLoader)
+
 	pokeRepository.On("FindById", p, 3).Return(mockPokemon[2], nil)
 
-	pokemonService := NewPokemonService(pokeRepository)
+	pokemonService := NewPokemonService(pokeRepository, pokeLoader)
 	p, err := pokemonService.FindById(p, 3)
 	if err != nil {
 		t.Errorf("Error in Pokemon service: %s", err)

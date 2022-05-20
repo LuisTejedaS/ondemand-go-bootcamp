@@ -13,6 +13,20 @@ type CsvDataStore struct {
 	mock.Mock
 }
 
+// DeleteRecords provides a mock function with given fields:
+func (_m *CsvDataStore) DeleteRecords() error {
+	ret := _m.Called()
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func() error); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // SaveRecord provides a mock function with given fields: record
 func (_m *CsvDataStore) SaveRecord(record []string) error {
 	ret := _m.Called(record)

@@ -23,12 +23,27 @@ func main() {
 		log.Fatalln(err)
 	}
 
+	csvDataStorePokemon, err := data.NewCSVDataStore("/Users/luis.tejeda/Documents/Source/GitHub/ondemand-go-bootcamp/poke.csv")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	apiDataSourcePokemon, err := data.NewApiDataSource(" ")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	pokemonCSVRepository, err := repository.NewpokemonCSVRepository(csvDataSourcePokemon)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	pokemonService := service.NewPokemonService(pokemonCSVRepository)
+	pokemonApiRepository, err := repository.NewPokemonApiLoader(apiDataSourcePokemon, csvDataStorePokemon)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	pokemonService := service.NewPokemonService(pokemonCSVRepository, pokemonApiRepository)
 	pokemonPresenter := presenter.NewPokemonPresenter()
 	pokemonInteractor := interactor.NewPokemonInteractor(pokemonService, pokemonPresenter)
 

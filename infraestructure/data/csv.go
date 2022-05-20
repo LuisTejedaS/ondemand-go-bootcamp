@@ -34,13 +34,16 @@ func (c csvDataSource) ReadCollection() ([][]string, error) {
 		return nil, err
 	}
 
-	records = records[1:]
+	if len(records) > 0 {
+		records = records[1:]
+	}
 	return records, nil
 }
 
 type CsvDataStore interface {
 	SaveRecord(record []string) error
 	SaveRecords(record [][]string) error
+	DeleteRecords() error
 }
 
 type csvDataStore struct {
@@ -97,5 +100,12 @@ func (c csvDataStore) SaveRecords(records [][]string) error {
 		return err
 	}
 
+	return nil
+}
+
+func (c csvDataStore) DeleteRecords() error {
+	if err := os.Truncate(c.csvPath, 0); err != nil {
+		return err
+	}
 	return nil
 }

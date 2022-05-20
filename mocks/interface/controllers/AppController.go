@@ -24,6 +24,11 @@ func (_m *AppController) GetPokemons(c *gin.Context) {
 	_m.Called(c)
 }
 
+// LoadPokemons provides a mock function with given fields: c
+func (_m *AppController) LoadPokemons(c *gin.Context) {
+	_m.Called(c)
+}
+
 // NewAppController creates a new instance of AppController. It also registers the testing.TB interface on the mock and a cleanup function to assert the mocks expectations.
 func NewAppController(t testing.TB) *AppController {
 	mock := &AppController{}

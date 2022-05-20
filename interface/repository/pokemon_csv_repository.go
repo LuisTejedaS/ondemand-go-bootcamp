@@ -17,15 +17,16 @@ type pokemonCSVRepository struct {
 func NewpokemonCSVRepository(ds data.CsvDataSource) (*pokemonCSVRepository, error) {
 	adapter := &pokemonCSVRepository{csvDataSource: ds}
 
-	if err := adapter.loadPokemons(); err != nil {
+	if err := adapter.LoadPokemons(); err != nil {
 		return nil, err
 	}
 
 	return adapter, nil
 }
 
-func (a *pokemonCSVRepository) loadPokemons() error {
+func (a *pokemonCSVRepository) LoadPokemons() error {
 	csvRecords, err := a.csvDataSource.ReadCollection()
+	a.pokemons = make([]*model.Pokemon, 0)
 	if err != nil {
 		return err
 	}

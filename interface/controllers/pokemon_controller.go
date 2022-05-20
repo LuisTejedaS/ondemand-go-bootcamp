@@ -16,6 +16,7 @@ type pokemonController struct {
 type PokemonController interface {
 	GetPokemons(c *gin.Context)
 	GetPokemon(c *gin.Context)
+	LoadPokemons(c *gin.Context)
 }
 
 func NewPokemonController(pI interactor.PokemonInteractor) PokemonController {
@@ -48,5 +49,15 @@ func (pc *pokemonController) GetPokemon(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, p)
+	return
+}
+
+func (pc *pokemonController) LoadPokemons(c *gin.Context) {
+	err := pc.pokemonInteractor.LoadPokemons()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.String(http.StatusOK, "ok")
 	return
 }

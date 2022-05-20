@@ -14,6 +14,7 @@ type pokemonInteractor struct {
 type PokemonInteractor interface {
 	Get(p []*model.Pokemon) ([]*model.Pokemon, error)
 	GetById(p *model.Pokemon, id int) (*model.Pokemon, error)
+	LoadPokemons() error
 }
 
 func NewPokemonInteractor(s service.PokemonService, p presenter.PokemonPresenter) PokemonInteractor {
@@ -36,4 +37,13 @@ func (pI *pokemonInteractor) GetById(p *model.Pokemon, id int) (*model.Pokemon, 
 	}
 
 	return pI.PokemonPresenter.ResponsePokemon(p), nil
+}
+
+func (pI *pokemonInteractor) LoadPokemons() error {
+	err := pI.PokemonService.LoadPokemons()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

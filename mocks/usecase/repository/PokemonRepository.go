@@ -60,6 +60,20 @@ func (_m *PokemonRepository) FindById(u *model.Pokemon, id int) (*model.Pokemon,
 	return r0, r1
 }
 
+// LoadPokemons provides a mock function with given fields:
+func (_m *PokemonRepository) LoadPokemons() error {
+	ret := _m.Called()
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func() error); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // NewPokemonRepository creates a new instance of PokemonRepository. It also registers the testing.TB interface on the mock and a cleanup function to assert the mocks expectations.
 func NewPokemonRepository(t testing.TB) *PokemonRepository {
 	mock := &PokemonRepository{}

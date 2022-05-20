@@ -7,15 +7,17 @@ import (
 
 type pokemonService struct {
 	PokemonRepository repository.PokemonRepository
+	PokemonLoader     repository.PokemonLoader
 }
 
 type PokemonService interface {
 	FindAll([]*model.Pokemon) ([]*model.Pokemon, error)
 	FindById(*model.Pokemon, int) (*model.Pokemon, error)
+	LoadPokemons() error
 }
 
-func NewPokemonService(r repository.PokemonRepository) pokemonService {
-	return pokemonService{PokemonRepository: r}
+func NewPokemonService(r repository.PokemonRepository, l repository.PokemonLoader) pokemonService {
+	return pokemonService{PokemonRepository: r, PokemonLoader: l}
 }
 
 func (s pokemonService) FindAll(p []*model.Pokemon) ([]*model.Pokemon, error) {
@@ -34,4 +36,16 @@ func (s pokemonService) FindById(p *model.Pokemon, id int) (*model.Pokemon, erro
 	}
 
 	return p, nil
+}
+
+func (s pokemonService) LoadPokemons() error {
+	err := s.PokemonLoader.LoadPokemons()
+	if err != nil {
+		return err
+	}
+	err = s.PokemonRepository.LoadPokemons()
+	if err != nil {
+		return err
+	}
+	return nil
 }

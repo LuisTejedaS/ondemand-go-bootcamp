@@ -13,13 +13,15 @@ type pokemonApiLoader struct {
 	csvDataStore  data.CsvDataStore
 }
 
-func NewPokemonAPIRepository(ds data.ApiDataSource, st data.CsvDataStore) (*pokemonApiLoader, error) {
+func NewPokemonApiLoader(ds data.ApiDataSource, st data.CsvDataStore) (*pokemonApiLoader, error) {
 	s := &pokemonApiLoader{apiDataSource: ds, csvDataStore: st}
 	return s, nil
 }
 
-func (a *pokemonApiLoader) loadPokemons() error {
+func (a *pokemonApiLoader) LoadPokemons() error {
 	toSave := make([][]string, 0, 5)
+	toSave = append(toSave, []string{"id", "name"})
+
 	records, err := a.apiDataSource.ReadCollection()
 	if err != nil {
 		return err
@@ -30,10 +32,13 @@ func (a *pokemonApiLoader) loadPokemons() error {
 	for k, v := range res.Results {
 		id := strconv.Itoa(k)
 		name := v.Name
-		// el := []string{id, name}
 		toSave = append(toSave, []string{id, name})
 	}
 
+	err = a.csvDataStore.DeleteRecords()
+	if err != nil {
+		return err
+	}
 	err = a.csvDataStore.SaveRecords(toSave)
 	if err != nil {
 		return err

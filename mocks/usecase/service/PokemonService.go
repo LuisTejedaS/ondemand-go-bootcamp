@@ -60,6 +60,20 @@ func (_m *PokemonService) FindById(_a0 *model.Pokemon, _a1 int) (*model.Pokemon,
 	return r0, r1
 }
 
+// LoadPokemons provides a mock function with given fields:
+func (_m *PokemonService) LoadPokemons() error {
+	ret := _m.Called()
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func() error); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // NewPokemonService creates a new instance of PokemonService. It also registers the testing.TB interface on the mock and a cleanup function to assert the mocks expectations.
 func NewPokemonService(t testing.TB) *PokemonService {
 	mock := &PokemonService{}

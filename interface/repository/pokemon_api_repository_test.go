@@ -28,11 +28,11 @@ func TestLoadPokemons(t *testing.T) {
 	pokeDS.On("ReadCollection").Return(apiRes, nil)
 	pokeStore.On("SaveRecords", srEx).Return(nil)
 
-	poApiRepository, err := NewPokemonAPIRepository(pokeDS, pokeStore)
+	poApiRepository, err := NewPokemonApiLoader(pokeDS, pokeStore)
 	if err != nil {
 		t.Errorf("Error creating api repository: %s", err)
 	}
-	err = poApiRepository.loadPokemons()
+	err = poApiRepository.LoadPokemons()
 	if err != nil {
 		t.Errorf("Error loading pokemon: %s", err)
 	}
