@@ -20,12 +20,13 @@ var apiRes = `{
 				"url": "https://pokeapi.co/api/v2/pokemon/2/"
 		}  ]
 }`
-var srEx = [][]string{{"0", "bulbasaur"}, {"1", "ivysaur"}}
+var srEx = [][]string{{"id", "name"}, {"0", "bulbasaur"}, {"1", "ivysaur"}}
 
 func TestLoadPokemons(t *testing.T) {
 	pokeDS := new(mocks.ApiDataSource)
 	pokeStore := new(mocks.CsvDataStore)
 	pokeDS.On("ReadCollection").Return(apiRes, nil)
+	pokeStore.On("DeleteRecords").Return(nil)
 	pokeStore.On("SaveRecords", srEx).Return(nil)
 
 	poApiRepository, err := NewPokemonApiLoader(pokeDS, pokeStore)
