@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/LuisTejedaS/ondemand-go-bootcamp/infraestructure/config"
 	"github.com/LuisTejedaS/ondemand-go-bootcamp/infraestructure/data"
@@ -18,19 +19,23 @@ const port = ":8090"
 
 func main() {
 	log.SetFlags(log.Lshortfile | log.LstdFlags)
-	configuration, err := config.NewConfiguration()
+	wd, err := os.Getwd()
+	if err != nil {
+		log.Println(err)
+	}
+	configuration, err := config.NewConfiguration(wd)
 
-	csvDataSourcePokemon, err := data.NewCSVDataSource(configuration.Csv)
+	csvDataSourcePokemon, err := data.NewCSVDataSource(configuration.ConfData.Csv)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	csvDataStorePokemon, err := data.NewCSVDataStore(configuration.Csv)
+	csvDataStorePokemon, err := data.NewCSVDataStore(configuration.ConfData.Csv)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	apiDataSourcePokemon, err := data.NewApiDataSource(" ")
+	apiDataSourcePokemon, err := data.NewApiDataSource(configuration.ConfData.PokeBaseUrl)
 	if err != nil {
 		log.Fatalln(err)
 	}

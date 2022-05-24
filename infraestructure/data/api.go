@@ -2,10 +2,12 @@ package data
 
 import (
 	"errors"
+	"io/ioutil"
+	"net/http"
 )
 
 type apiDataSource struct {
-	csvPath string
+	baseUrl string
 }
 
 type ApiDataSource interface {
@@ -20,18 +22,22 @@ func NewApiDataSource(url string) (apiDataSource, error) {
 }
 
 func (c apiDataSource) ReadCollection() (string, error) {
-	return `{
-		"count": 1126,
-		"next": "https://pokeapi.co/api/v2/pokemon?offset=150&limit=150",
-		"previous": null,
-		"results": [
-				{
-						"name": "bulbasaur",
-						"url": "https://pokeapi.co/api/v2/pokemon/1/"
-				},
-				{
-					"name": "ivysaur",
-					"url": "https://pokeapi.co/api/v2/pokemon/2/"
-			}  ]
-	}`, nil
+	url := c.baseUrl + "?offset=0&limit=151"
+
+	method := "GET"
+	client := &http.Client{}
+	req, err := http.NewRequest(method, url, nil)
+
+	if err != nil {
+		return "", err
+	}
+	res, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer res.Body.Close()
+
+	body, err := ioutil.ReadAll(res.Body)
+
+	return string(body), nil
 }

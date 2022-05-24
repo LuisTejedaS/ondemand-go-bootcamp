@@ -11,15 +11,17 @@ type Configuration interface {
 }
 
 type configuration struct {
-	confData
+	ConfData confData
+	Wd       string
 }
 
 type confData struct {
-	Csv string `json:"csv"`
+	Csv         string `json:"csv"`
+	PokeBaseUrl string `json:"pokeBaseUrl"`
 }
 
-func NewConfiguration() (configuration, error) {
-	var conf = configuration{}
+func NewConfiguration(wd string) (configuration, error) {
+	var conf = configuration{Wd: wd}
 	err := conf.Load()
 	if err != nil {
 		return conf, err
@@ -28,7 +30,7 @@ func NewConfiguration() (configuration, error) {
 }
 
 func (c *configuration) Load() error {
-	jsonFile, err := os.Open("/Users/luis.tejeda/Documents/Source/GitHub/ondemand-go-bootcamp/conf.json")
+	jsonFile, err := os.Open(c.Wd + "/conf.json")
 	if err != nil {
 		return err
 	}
@@ -39,7 +41,7 @@ func (c *configuration) Load() error {
 	var d confData
 	json.Unmarshal(byteValue, &d)
 
-	c.confData = d
+	c.ConfData = d
 	return nil
 
 }
