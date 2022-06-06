@@ -18,6 +18,7 @@ type configuration struct {
 type confData struct {
 	CSV         string `json:"csv"`
 	PokeBaseURL string `json:"pokeBaseUrl"`
+	Port        string `json:"port"`
 }
 
 func NewConfiguration(WD string) (configuration, error) {
@@ -46,5 +47,4 @@ func (c *configuration) Load() error {
 
 	c.ConfData = d
 	return nil
-
 }

@@ -15,7 +15,7 @@ import (
 	"github.com/LuisTejedaS/ondemand-go-bootcamp/usecase/service"
 )
 
-const port = ":8090"
+// const port = ":8090"
 
 func main() {
 	log.SetFlags(log.Lshortfile | log.LstdFlags)
@@ -64,7 +64,7 @@ func main() {
 
 	routerV1.RegisterPokemonRoutes(routerGroup, controller)
 
-	log.Printf("Listening on port %s", port)
+	log.Printf("Listening on port %s", configuration.ConfData.Port)
 
-	log.Fatal(http.ListenAndServe(port, router))
+	log.Fatal(http.ListenAndServe(configuration.ConfData.Port, router))
 }

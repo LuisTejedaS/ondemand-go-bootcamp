@@ -1,4 +1,5 @@
 {
   "csv": "/Users/luis.tejeda/Documents/Source/GitHub/ondemand-go-bootcamp/poke.csv",
-  "pokeBaseUrl": "https://pokeapi.co/api/v2/pokemon" 
+  "pokeBaseUrl": "https://pokeapi.co/api/v2/pokemon",
+  "port": ":8090"
 }
