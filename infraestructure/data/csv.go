@@ -12,13 +12,18 @@ type csvDataSource struct {
 
 type CsvDataSource interface {
 	ReadCollection() ([][]string, error)
+	CSVPath() string
 }
 
-func NewCSVDataSource(csvPath string) (csvDataSource, error) {
+func NewCSVDataSource(csvPath string) (CsvDataSource, error) {
 	if csvPath == "" {
 		return csvDataSource{csvPath}, errors.New("No CSV path sent")
 	}
 	return csvDataSource{csvPath}, nil
+}
+
+func (c csvDataSource) CSVPath() string {
+	return c.csvPath
 }
 
 func (c csvDataSource) ReadCollection() ([][]string, error) {
@@ -44,17 +49,22 @@ type CsvDataStore interface {
 	SaveRecord(record []string) error
 	SaveRecords(record [][]string) error
 	DeleteRecords() error
+	CSVPath() string
 }
 
 type csvDataStore struct {
 	csvPath string
 }
 
-func NewCSVDataStore(csvPath string) (csvDataStore, error) {
+func NewCSVDataStore(csvPath string) (CsvDataStore, error) {
 	if csvPath == "" {
 		return csvDataStore{csvPath}, errors.New("No CSV path sent")
 	}
 	return csvDataStore{csvPath}, nil
+}
+
+func (c csvDataStore) CSVPath() string {
+	return c.csvPath
 }
 
 func (c csvDataStore) SaveRecord(record []string) error {

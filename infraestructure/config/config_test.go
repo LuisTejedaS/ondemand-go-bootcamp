@@ -11,7 +11,7 @@ func TestLoad(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error in Pokemon service: %s", err)
 	}
-	c := configuration.ConfData.Csv
+	c := configuration.ConfData.CSV
 
 	if c != exp {
 		t.Errorf("Configuration reading error, got: %s, want: %s.", c, exp)

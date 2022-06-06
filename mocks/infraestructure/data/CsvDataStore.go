@@ -13,6 +13,20 @@ type CsvDataStore struct {
 	mock.Mock
 }
 
+// CSVPath provides a mock function with given fields:
+func (_m *CsvDataStore) CSVPath() string {
+	ret := _m.Called()
+
+	var r0 string
+	if rf, ok := ret.Get(0).(func() string); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Get(0).(string)
+	}
+
+	return r0
+}
+
 // DeleteRecords provides a mock function with given fields:
 func (_m *CsvDataStore) DeleteRecords() error {
 	ret := _m.Called()

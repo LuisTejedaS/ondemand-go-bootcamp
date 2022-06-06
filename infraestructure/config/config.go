@@ -12,16 +12,16 @@ type Configuration interface {
 
 type configuration struct {
 	ConfData confData
-	Wd       string
+	WD       string
 }
 
 type confData struct {
-	Csv         string `json:"csv"`
-	PokeBaseUrl string `json:"pokeBaseUrl"`
+	CSV         string `json:"csv"`
+	PokeBaseURL string `json:"pokeBaseUrl"`
 }
 
-func NewConfiguration(wd string) (configuration, error) {
-	var conf = configuration{Wd: wd}
+func NewConfiguration(WD string) (configuration, error) {
+	var conf = configuration{WD: WD}
 	err := conf.Load()
 	if err != nil {
 		return conf, err
@@ -30,7 +30,7 @@ func NewConfiguration(wd string) (configuration, error) {
 }
 
 func (c *configuration) Load() error {
-	jsonFile, err := os.Open(c.Wd + "/conf.json")
+	jsonFile, err := os.Open(c.WD + "/conf.json")
 	if err != nil {
 		return err
 	}
@@ -39,7 +39,10 @@ func (c *configuration) Load() error {
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 
 	var d confData
-	json.Unmarshal(byteValue, &d)
+	err = json.Unmarshal(byteValue, &d)
+	if err != nil {
+		return err
+	}
 
 	c.ConfData = d
 	return nil

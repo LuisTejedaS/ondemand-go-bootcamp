@@ -33,8 +33,12 @@ func populateFile(t *testing.T, p string) {
 func TestCreateNewCSVDataSource(t *testing.T) {
 	p := "ondemand-go-bootcamp/poke.csv"
 	csvDS, _ := NewCSVDataSource(p)
-	if csvDS.csvPath != p {
-		t.Errorf("CSVPath was not set, got: %s, want: %s.", csvDS.csvPath, p)
+	if csvDS.CSVPath() != p {
+		t.Errorf("CSVPath was not set, got: %s, want: %s.", csvDS.CSVPath(), p)
+	}
+	_, ok := csvDS.(csvDataSource)
+	if !ok {
+		t.Error("Type assertion error")
 	}
 }
 
@@ -49,8 +53,8 @@ func TestCreateNewCSVDataSourceInvalidPath(t *testing.T) {
 func TestCreateNewCSVDataStore(t *testing.T) {
 	p := "/ondemand-go-bootcamp/poke.csv"
 	csvDS, _ := NewCSVDataStore(p)
-	if csvDS.csvPath != p {
-		t.Errorf("CSVPath was not set, got: %s, want: %s.", csvDS.csvPath, p)
+	if csvDS.CSVPath() != p {
+		t.Errorf("CSVPath was not set, got: %s, want: %s.", csvDS.CSVPath(), p)
 	}
 }
 
@@ -67,8 +71,8 @@ func TestReadCollection(t *testing.T) {
 	p := dir + "/poke.csv"
 	populateFile(t, p)
 	csvDS, _ := NewCSVDataSource(p)
-	if csvDS.csvPath != p {
-		t.Errorf("CSVPath was not set, got: %s, want: %s.", csvDS.csvPath, p)
+	if csvDS.CSVPath() != p {
+		t.Errorf("CSVPath was not set, got: %s, want: %s.", csvDS.CSVPath(), p)
 	}
 	pok, err := csvDS.ReadCollection()
 	if err != nil {
@@ -84,8 +88,8 @@ func TestReadCollectionError(t *testing.T) {
 	dir := createFile(t)
 	p := dir + "/poka.csv"
 	csvDS, _ := NewCSVDataSource(p)
-	if csvDS.csvPath != p {
-		t.Errorf("CSVPath was not set, got: %s, want: %s.", csvDS.csvPath, p)
+	if csvDS.CSVPath() != p {
+		t.Errorf("CSVPath was not set, got: %s, want: %s.", csvDS.CSVPath(), p)
 	}
 	_, err := csvDS.ReadCollection()
 	if !strings.Contains(err.Error(), "no such file or directory") {
@@ -105,8 +109,8 @@ func TestSaveRecord(t *testing.T) {
 		t.Errorf("There was an error saving record: %s", err)
 	}
 	csvDS, _ := NewCSVDataSource(p)
-	if csvDS.csvPath != p {
-		t.Errorf("CSVPath was not set, got: %s, want: %s.", csvDS.csvPath, p)
+	if csvDS.CSVPath() != p {
+		t.Errorf("CSVPath was not set, got: %s, want: %s.", csvDS.CSVPath(), p)
 	}
 	pok, err := csvDS.ReadCollection()
 	if err != nil {
@@ -142,8 +146,8 @@ func TestSaveRecords(t *testing.T) {
 		t.Errorf("There was an error saving record: %s", err)
 	}
 	csvDS, _ := NewCSVDataSource(p)
-	if csvDS.csvPath != p {
-		t.Errorf("CSVPath was not set, got: %s, want: %s.", csvDS.csvPath, p)
+	if csvDS.CSVPath() != p {
+		t.Errorf("CSVPath was not set, got: %s, want: %s.", csvDS.CSVPath(), p)
 	}
 	pok, err := csvDS.ReadCollection()
 	if err != nil {

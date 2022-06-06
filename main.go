@@ -19,23 +19,26 @@ const port = ":8090"
 
 func main() {
 	log.SetFlags(log.Lshortfile | log.LstdFlags)
-	wd, err := os.Getwd()
+	WD, err := os.Getwd()
 	if err != nil {
 		log.Println(err)
 	}
-	configuration, err := config.NewConfiguration(wd)
-
-	csvDataSourcePokemon, err := data.NewCSVDataSource(configuration.ConfData.Csv)
+	configuration, err := config.NewConfiguration(WD)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	csvDataStorePokemon, err := data.NewCSVDataStore(configuration.ConfData.Csv)
+	csvDataSourcePokemon, err := data.NewCSVDataSource(configuration.ConfData.CSV)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	apiDataSourcePokemon, err := data.NewApiDataSource(configuration.ConfData.PokeBaseUrl)
+	csvDataStorePokemon, err := data.NewCSVDataStore(configuration.ConfData.CSV)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	apiDataSourcePokemon, err := data.NewApiDataSource(configuration.ConfData.PokeBaseURL)
 	if err != nil {
 		log.Fatalln(err)
 	}
