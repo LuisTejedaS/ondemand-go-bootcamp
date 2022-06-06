@@ -1,19 +1,23 @@
 package config
 
 import (
+	"os"
+	"path/filepath"
+	"strings"
 	"testing"
 )
 
-var exp = "/Users/luis.tejeda/Documents/Source/GitHub/ondemand-go-bootcamp/poke.csv"
+var exp = "poke.csv"
 
 func TestLoad(t *testing.T) {
-	configuration, err := NewConfiguration("/Users/luis.tejeda/Documents/Source/GitHub/ondemand-go-bootcamp/")
+	WD, err := os.Getwd()
+	p := filepath.Join(WD, "../", "../")
+	configuration, err := NewConfiguration(p)
 	if err != nil {
 		t.Errorf("Error in Pokemon service: %s", err)
 	}
 	c := configuration.ConfData.CSV
-
-	if c != exp {
+	if !strings.Contains(c, exp) {
 		t.Errorf("Configuration reading error, got: %s, want: %s.", c, exp)
 	}
 
