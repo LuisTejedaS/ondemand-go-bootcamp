@@ -3,7 +3,7 @@ package model
 type ApiResult struct {
 	Count    int64        `json:"count"`
 	Next     string       `json:"next"`
-	Previous interface{}  `json:"previous"`
+	Previous string       `json:"previous"`
 	Results  []PokeResult `json:"results"`
 }
 
